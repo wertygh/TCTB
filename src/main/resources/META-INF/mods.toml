@@ -1,0 +1,33 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="BSD Zero Clause License"
+[[mods]]
+modId="tctb"
+version="1.0.0"
+displayName="TConstruct-Tetra Bridge"
+authors="wertygh, 临时性永恒"
+description='''A linkage mod for Tetra and TConstruct'''
+[[dependencies.tctb]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.tctb]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.tctb]]
+    modId = "tconstruct"
+    mandatory = true
+    versionRange = "[3.11.2.166,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.tctb]]
+    modId = "tetra"
+    mandatory = true
+    versionRange = "[6.17.0,)"
+    ordering="NONE"
+    side="BOTH"
