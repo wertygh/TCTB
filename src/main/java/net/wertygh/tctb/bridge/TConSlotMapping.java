@@ -27,8 +27,8 @@ public class TConSlotMapping {
     public static final String BINDING_SINGLE = "single/binding";
     public static final String BINDING_DOUBLE = "double/binding";
     public static final String BINDING_SWORD = "sword/guard";
-    public static final String BOW_LIMB = "bow/limb";
-    public static final String BOW_GRIP = "bow/grip";
+    public static final String BOW_STAVE = "bow/stave";
+    public static final String BOW_RISER = "bow/riser";
     public static final String BOW_STRING = "bow/string";
 
     private static final String PATH_HEAD = "head";
@@ -54,6 +54,14 @@ public class TConSlotMapping {
 
     private static boolean isBladePart(String path) {
         return PART_BROAD_BLADE.equals(path) || PART_SMALL_BLADE.equals(path);
+    }
+
+    public static boolean isRanged(ToolStack tool) {
+        for (MaterialStatsId statType : ToolMaterialHook.stats(tool.getDefinition())) {
+            String path = statType.getPath();
+            if (PATH_LIMB.equals(path) || PATH_GRIP.equals(path) || PATH_BOWSTRING.equals(path)) return true;
+        }
+        return false;
     }
 
     public static String[] getSlotKeys(ItemStack stack, ToolStack tool) {
@@ -110,8 +118,8 @@ public class TConSlotMapping {
         if (PATH_BINDING.equals(path)) {
             return isSword ? BINDING_SWORD : (doubleStyle ? BINDING_DOUBLE : BINDING_SINGLE);
         }
-        if (PATH_LIMB.equals(path)) return BOW_LIMB;
-        if (PATH_GRIP.equals(path)) return BOW_GRIP;
+        if (PATH_LIMB.equals(path)) return BOW_STAVE;
+        if (PATH_GRIP.equals(path)) return BOW_RISER;
         if (PATH_BOWSTRING.equals(path)) return BOW_STRING;
         return HEAD_SINGLE;
     }
@@ -119,14 +127,15 @@ public class TConSlotMapping {
     public static boolean isMajor(MaterialStatsId statType) {
         String path = statType.getPath();
         return PATH_HEAD.equals(path)
-            || PATH_HANDLE.equals(path)
-            || PATH_LIMB.equals(path)
-            || PATH_GRIP.equals(path)
-            || path.startsWith(PATH_PLATING_PREFIX);
+                || PATH_HANDLE.equals(path)
+                || PATH_LIMB.equals(path)
+                || PATH_BOWSTRING.equals(path)
+                || path.startsWith(PATH_PLATING_PREFIX);
     }
 
     public static boolean isMinor(MaterialStatsId statType) {
         String path = statType.getPath();
-        return PATH_BINDING.equals(path) || PATH_BOWSTRING.equals(path);
+        return PATH_BINDING.equals(path)
+                || PATH_GRIP.equals(path);
     }
 }

@@ -13,7 +13,9 @@
     "BookEnchantSchematicMixin",
     "ConfigSchematicMixin",
     "BasicSchematicMixin",
-    "SchematicRegistryMixin"
+    "SchematicRegistryMixin",
+    "ModifiableLauncherItemMixin",
+    "ModifiableBowItemMixin"
   ],
   "client": [
     "GuiSlotDetailMixin",

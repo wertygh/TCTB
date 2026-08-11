@@ -9,6 +9,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import se.mickelus.tetra.module.ItemModule;
 import se.mickelus.tetra.module.data.ItemProperties;
+import se.mickelus.tetra.module.data.VariantData;
+import se.mickelus.tetra.properties.TetraAttributes;
 import slimeknights.tconstruct.library.materials.MaterialRegistry;
 import slimeknights.tconstruct.library.materials.definition.MaterialVariant;
 import slimeknights.tconstruct.library.materials.stats.IMaterialStats;
@@ -29,7 +31,7 @@ public class TConPropertyBuilder {
     public static ItemProperties getProperties(Item item, ItemStack stack) {
         ItemProperties props = new ItemProperties();
         ToolStack tool = TConToolData.getToolStack(item, stack);
-        if (tool == null) return props;    
+        if (tool == null) return props;
         props.durability = tool.getStats().getInt(ToolStats.DURABILITY);
         props.durabilityMultiplier = 1;
         props.integrity = computeIntegrityBase(tool);
@@ -55,20 +57,51 @@ public class TConPropertyBuilder {
         ToolStack tool = TConToolData.getToolStack(item, stack);
         if (tool == null) return null;
         ArrayListMultimap<Attribute, AttributeModifier> result = ArrayListMultimap.create();
+
+        if (TConSlotMapping.isRanged(tool)) {
+            float drawSpeed = 0;
+            float drawStrength = 0;
+            for (String slotKey : TConSlotMapping.getSlotKeys(stack, tool)) {
+                ItemModule module = TConModuleResolver.findProxyModule(slotKey, stack);
+                if (module == null || !TConModuleData.hasModule(stack, slotKey)) continue;
+                VariantData vd = TConModuleResolver.readVariant(stack, slotKey, module);
+                if (vd == null || vd.attributes == null) continue;
+                for (AttributeModifier mod : vd.attributes.get(TetraAttributes.drawSpeed.get())) {
+                    if (mod.getOperation() == AttributeModifier.Operation.ADDITION) {
+                        drawSpeed += mod.getAmount();
+                    }
+                }
+                for (AttributeModifier mod : vd.attributes.get(TetraAttributes.drawStrength.get())) {
+                    if (mod.getOperation() == AttributeModifier.Operation.ADDITION) {
+                        drawStrength += mod.getAmount();
+                    }
+                }
+            }
+            if (drawSpeed != 0) {
+                result.put(TetraAttributes.drawSpeed.get(),
+                    new AttributeModifier(UUID.nameUUIDFromBytes("tctb_draw_spd".getBytes()),
+                        "tctb_bridge_draw_speed", drawSpeed, AttributeModifier.Operation.ADDITION));
+            }
+            if (drawStrength != 0) {
+                result.put(TetraAttributes.drawStrength.get(),
+                    new AttributeModifier(UUID.nameUUIDFromBytes("tctb_draw_str".getBytes()),
+                        "tctb_bridge_draw_strength", drawStrength, AttributeModifier.Operation.ADDITION));
+            }
+            return result.isEmpty() ? null : result;
+        }
+
         StatsNBT stats = tool.getStats();
         float atk = stats.get(ToolStats.ATTACK_DAMAGE);
         if (atk > 0) {
             result.put(Attributes.ATTACK_DAMAGE,
                 new AttributeModifier(UUID.nameUUIDFromBytes("tctb_atk".getBytes()),
-                    "tctb_bridge_attack", atk - 1.0,
-                    AttributeModifier.Operation.ADDITION));
+                    "tctb_bridge_attack", atk - 1.0, AttributeModifier.Operation.ADDITION));
         }
         float spd = stats.get(ToolStats.ATTACK_SPEED);
         if (spd > 0) {
             result.put(Attributes.ATTACK_SPEED,
                 new AttributeModifier(UUID.nameUUIDFromBytes("tctb_spd".getBytes()),
-                    "tctb_bridge_speed", spd - 4.0,
-                    AttributeModifier.Operation.ADDITION));
+                    "tctb_bridge_speed", spd - 4.0, AttributeModifier.Operation.ADDITION));
         }
         return result.isEmpty() ? null : result;
     }

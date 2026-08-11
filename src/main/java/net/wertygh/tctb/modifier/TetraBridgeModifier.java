@@ -25,12 +25,12 @@ public class TetraBridgeModifier extends Modifier {
     public TetraBridgeModifier() {
         super(buildHooks());
     }
-    
+
     @Override
     public Component getDisplayName(int level) {
         return super.getDisplayName();
     }
-    
+
     private static ModuleHookMap buildHooks() {
         ModuleHookMap.Builder builder = ModuleHookMap.builder();
         builder.addHook(
@@ -45,6 +45,12 @@ public class TetraBridgeModifier extends Modifier {
                         ToolStats.ATTACK_SPEED.add(statBuilder, data.getFloat("attack_speed"));
                     if (data.contains("durability", Tag.TAG_INT))
                         ToolStats.DURABILITY.add(statBuilder, data.getInt("durability"));
+                    if (data.contains("draw_speed", Tag.TAG_FLOAT))
+                        ToolStats.DRAW_SPEED.add(statBuilder, data.getFloat("draw_speed"));
+                    if (data.contains("velocity", Tag.TAG_FLOAT))
+                        ToolStats.VELOCITY.add(statBuilder, data.getFloat("velocity"));
+                    if (data.contains("projectile_damage", Tag.TAG_FLOAT))
+                        ToolStats.PROJECTILE_DAMAGE.add(statBuilder, data.getFloat("projectile_damage"));
                 },
             ModifierHooks.TOOL_STATS
         );

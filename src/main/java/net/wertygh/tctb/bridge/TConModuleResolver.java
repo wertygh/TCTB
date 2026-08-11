@@ -5,6 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import se.mickelus.tetra.module.ItemModule;
 import se.mickelus.tetra.module.ItemUpgradeRegistry;
 import se.mickelus.tetra.module.ModuleRegistry;
+import se.mickelus.tetra.module.data.VariantData;
 import slimeknights.tconstruct.library.materials.stats.MaterialStatsId;
 import slimeknights.tconstruct.library.tools.definition.module.material.ToolMaterialHook;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
@@ -45,6 +46,12 @@ public class TConModuleResolver {
             if (TConSlotMapping.isMinor(statTypes.get(i))) minor.add(allKeys[i]);
         }
         return minor.toArray(new String[0]);
+    }
+
+    @Nullable
+    public static VariantData readVariant(ItemStack stack, String slotKey, ItemModule module) {
+        String variant = TConModuleData.getVariant(stack, slotKey, module.getKey());
+        return !variant.isEmpty() ? module.getVariantData(variant) : module.getDefaultData();
     }
 
     @Nullable
