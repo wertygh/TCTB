@@ -140,12 +140,14 @@ public class TetraBowFireHandler {
         if (!(ammo.getItem() instanceof ArrowItem arrowItem)) return;
         int count = Math.max(1, Math.min(multishot, player.getAbilities().instabuild ? desired : ammo.getCount()));
         ModifierNBT modifiers = tool.getModifiers();
-        float startAngle = -5f * (count - 1);
+        float multishotSpread = item.getEffectEfficiency(stack, ItemEffect.multishot);
+        float basePitch = player.getXRot();
+        float baseYaw = player.getYRot();
         int primaryIndex = count / 2;
         for (int i = 0; i < count; i++) {
             AbstractArrow arrow = arrowItem.createArrow(level, ammo, player);
-            float angle = startAngle + 10f * i;
-            arrow.shootFromRotation(player, player.getXRot() + angle, player.getYRot(), 0f, arrowVelocity * 3f, accuracy);
+            float yaw = baseYaw - multishotSpread * (count - 1) / 2f + multishotSpread * i;
+            arrow.shootFromRotation(player, basePitch, yaw, 0f, arrowVelocity * 3f, accuracy);
             if (drawProgress >= 20) arrow.setCritArrow(true);
             arrow.setBaseDamage(arrow.getBaseDamage() - 2f + strength / 3f);
             if (arrowVelocity > 1f) arrow.setBaseDamage(arrow.getBaseDamage() / arrowVelocity);
