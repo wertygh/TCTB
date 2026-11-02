@@ -65,6 +65,32 @@ mixin {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+sourceSets {
+    core {
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+tasks.register('coreJar', Jar) {
+    dependsOn sourceSets.core.classesTaskName
+    archiveClassifier = 'core'
+    from sourceSets.core.output
+    manifest {
+        attributes([
+                'Specification-Title'    : "${mod_id}-core",
+                'Specification-Version'  : '1',
+                'Implementation-Title'   : "${project.name}-core",
+                'Implementation-Version' : project.jar.archiveVersion,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+tasks.named('assemble') {
+    dependsOn coreJar
+}
+
 repositories {
     maven {
         url "https://cursemaven.com/"

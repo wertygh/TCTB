@@ -1,5 +1,8 @@
 {
   "modifier.tctb.tetra_bridge": "匠系",
   "modifier.tctb.tetra_bridge.flavor": "来自另一套工匠体系",
-  "modifier.tctb.tetra_bridge.description": "两套工匠体系的改造在这个工具上共存！"
+  "modifier.tctb.tetra_bridge.description": "两套工匠体系的改造在这个工具上共存！",
+  
+  "tctb.stats.mining_speed": "挖掘速度",
+  "tctb.stats.mining_speed.tooltip": "该TCon工具的基础挖掘速度为 %s"
 }

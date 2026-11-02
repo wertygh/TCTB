@@ -1,5 +1,8 @@
 {
   "modifier.tctb.tetra_bridge": "Artisan's Lineage",
   "modifier.tctb.tetra_bridge.flavor": "From another school of craft",
-  "modifier.tctb.tetra_bridge.description": "Upgrades from two crafting traditions coexist on this tool!"
+  "modifier.tctb.tetra_bridge.description": "Upgrades from two crafting traditions coexist on this tool!",
+  
+  "tctb.stats.mining_speed": "Mining speed",
+  "tctb.stats.mining_speed.tooltip": "The base mining speed of this TCon tool is %s"
 }

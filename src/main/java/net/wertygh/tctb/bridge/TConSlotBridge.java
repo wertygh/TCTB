@@ -11,12 +11,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import se.mickelus.tetra.module.ItemModule;
 import se.mickelus.tetra.module.data.ItemProperties;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
+import net.wertygh.tctb.bridge.data.*;
+import net.wertygh.tctb.bridge.runtime.*;
+import net.wertygh.tctb.bridge.stat.*;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.function.Supplier;
 
-public class TConSlotBridge {
+class TConSlotBridge {
     public static void pushSlotContext(@Nullable String slot) {
         TConSlotContext.pushSlotContext(slot);
     }
